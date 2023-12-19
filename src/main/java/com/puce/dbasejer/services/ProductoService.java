@@ -36,5 +36,13 @@ public class ProductoService {
         repositorio.deleteById(id);
     }
 
+    //
+    public List<Producto> listaProductosNombre(String nombre){
+        return repositorio.findByNombre(nombre);
+    }
+    public List<Producto> listaProductosPrecio(float precio){
+        return repositorio.findByPrecioGreaterThan(precio);
+    }
+    
     
 }

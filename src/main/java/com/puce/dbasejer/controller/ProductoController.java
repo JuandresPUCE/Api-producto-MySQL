@@ -3,6 +3,8 @@ package com.puce.dbasejer.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.puce.dbasejer.model.Producto;
@@ -26,8 +28,15 @@ public class ProductoController {
     //por id
     @GetMapping ("/productos/{id}")
     //path variable para obtener el id
-    public Producto obtenerProductoID(@PathVariable int id){
-        return servicio.obtenerProducto(id);
+    public ResponseEntity<Producto> obtenerProductoID(@PathVariable int id){
+        try{
+            Producto producto = servicio.obtenerProducto(id);
+            return new ResponseEntity <Producto>(producto, HttpStatus.OK);
+        }
+        catch(Exception e){
+            return new ResponseEntity <Producto>(HttpStatus.NOT_FOUND);
+        }
+        //return servicio.obtenerProducto(id);
     } 
 
     //requiere un body para guardar
@@ -51,6 +60,19 @@ public class ProductoController {
         Producto productoExist = servicio.obtenerProducto(id);
         return productoExist;
     }
+
+    //buscar por nombre
+    @GetMapping ("/productos/nombre/{nombre}")
+    public List<Producto> listarProductosNombre(@PathVariable String nombre){
+        return servicio.listaProductosNombre(nombre);
+    }
+
+    //buscar por precio mayores a 
+    @GetMapping ("/productos/precio/{precio}")
+    public List<Producto> listarProductosPrecio(@PathVariable float precio){
+        return servicio.listaProductosPrecio(precio);
+    }
+
 
 
     
